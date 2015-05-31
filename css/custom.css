@@ -1,0 +1,17 @@
+/* Custom Css */
+
+.form-center{
+	margin: 0% auto;
+	width:80%;
+	border:1px solid #000;
+	background:#FFF;
+}
+
+.form{
+	padding:0%;
+}
+
+.form-horizontal{
+	padding:2%;
+	border:1px solid #000;
+}
