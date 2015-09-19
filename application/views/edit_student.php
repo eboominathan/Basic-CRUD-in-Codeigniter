@@ -70,7 +70,7 @@
   					<select name="year" class="form-control">
   						<?php foreach($db as $d ){ 
   							if($year==$d){	?>
-  								<option value="<?php echo $d?>" selected="selected"><?php echo $d?></option>
+  								<option value="<?php echo $year?>" selected="selected"><?php echo $year?></option>
   							<?}else{?>
   									<option value="<?php echo $d?>"><?php echo $d?></option>
   							<?php }		}?>

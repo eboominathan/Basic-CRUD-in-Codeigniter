@@ -1,7 +1,8 @@
 <html>
 <head>
   <title> Chat Exmaples! </title>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+  
+  <script src="<?php echo base_url();?>assets/javascripts/jquery.min.js"></script>
   <script> 
     var time = 0;
   
@@ -43,7 +44,7 @@
         $("#text").val('');
         // get the time if clicked via a ajax get queury
         sendChat(data, function (){
-          alert("dane");
+          //alert("dane");
         });
       });
       setInterval(function (){

@@ -98,6 +98,7 @@ $(document).ready(function(){
 <div class="export">
   <a href="<?php echo base_url();?>student/pdf" class="btn btn-default">Export as PDF</a>&nbsp;&nbsp;
   <a href="<?php echo base_url();?>student/excel" class="btn btn-default">Export as Excel</a>
+  <a href="<?php echo base_url();?>student/word" class="btn btn-default">Export as Word</a>
 </div>
 <!--Modal Start here-->
         
