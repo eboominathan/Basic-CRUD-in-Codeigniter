@@ -5,6 +5,9 @@ class Student extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		if(!$this->session->userdata('is_logged_in')){
+			redirect('login');
+		}
 		$this->load->model('login/student_model');
 		$this->load->helper('url');
 		
@@ -13,17 +16,10 @@ class Student extends CI_Controller {
 	//Shows the dashboard
 	public function index()
 	{
-		if($this->session->userdata('is_logged_in'))
-		{
+		$this->load->view('header');
+		$this->load->view('student');
+		$this->load->view('login/footer');
 
-			$this->load->view('header');
-			$this->load->view('student');
-			$this->load->view('login/footer');
-		}else{
-			$this->load->view('login/header');
-			$this->load->view('login/content'); 
-			$this->load->view('login/footer');
-		}
 	}
 	//Insert the Student 
 	public function  insert_student()
@@ -138,39 +134,39 @@ class Student extends CI_Controller {
 	Public function word()
 	{
 
-			$student=$this->student_model->get_student();
+		$student=$this->student_model->get_student();
 		header("Content-type: application/vnd.ms-word");
 		header("Content-Disposition: attachment;Filename=document_name.doc");
 
-$html="<html>
- 	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-1252\">
- 	<body>";
+		$html="<html>
+		<meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-1252\">
+		<body>";
 
 
 
-$data='<table class="table table-bordered" id="table"> 
-<thead>
-<tr>
-	<th style="text-align:center;  background-color:#4C9ED9; color: #fff;">S.NO</th>
-	<th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Name</th>
-    <th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Address</th>  
-    <th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Gender</th> 
-    <th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Year of Passing</th>  
+		$data='<table class="table table-bordered" id="table"> 
+		<thead>
+		<tr>
+		<th style="text-align:center;  background-color:#4C9ED9; color: #fff;">S.NO</th>
+		<th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Name</th>
+		<th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Address</th>  
+		<th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Gender</th> 
+		<th style="text-align:center;  background-color:#4C9ED9; color: #fff;">Year of Passing</th>  
 
-	</tr>
-</thead>
-<tr>';
-		 $i=1;
- foreach($student as $s ):
-$data .='<td style="text-align:center;" >'.$i++.'</td>
-<td style="text-align:center;">'.$s->name.'</td>
-<td style="text-align:center;">'.$s->address.'</td>
-<td style="text-align:center;">'.$s->gender.'</td>
-<td style="text-align:center;">'.$s->year.'</td>
-</tr>';
- endforeach ;
-$data .='</table>';
-echo  $html.$data;
+		</tr>
+		</thead>
+		<tr>';
+		$i=1;
+		foreach($student as $s ):
+			$data .='<td style="text-align:center;" >'.$i++.'</td>
+			<td style="text-align:center;">'.$s->name.'</td>
+			<td style="text-align:center;">'.$s->address.'</td>
+			<td style="text-align:center;">'.$s->gender.'</td>
+			<td style="text-align:center;">'.$s->year.'</td>
+			</tr>';
+		endforeach ;
+		$data .='</table>';
+		echo  $html.$data;
 	}
 
 
@@ -313,6 +309,7 @@ echo  $html.$data;
 			{
 
 
+
 				$name = $objWorksheet->getCellByColumnAndRow(1,$j)->getValue();
 				$address = $objWorksheet->getCellByColumnAndRow(2,$j)->getValue();
 				$year = $objWorksheet->getCellByColumnAndRow(3,$j)->getValue();
@@ -328,28 +325,30 @@ echo  $html.$data;
 						'year'=>$year,
 						'gender'=>$gender,
 						'status'=>1);
-					$this->db->insert('student_list',$excel);
-					$result=($this->db->affected_rows()!= 1)? false:true;
-					if($result == true)
-					{
 
-						$this->session->set_flashdata('msg', 'Student Details Uploaded Successfully');
-						redirect('student/list_students');
-					}
-					else
-					{
-						$this->session->set_flashdata('msg1', 'Student Details Uploading Failed');
-						redirect('student/list_students');
-					}
-
-					
+					$this->db->insert('student_list',$excel);					
 				}
 				else
 				{
-					$this->session->set_flashdata('msg1', 'Failed To Upload!Contents are not Matched');
+					$this->session->set_flashdata('msg1', 'Failed To Upload! Contents are not Matched');
 					redirect('student/list_students');
 				}		
+
+
 				}// loop ends 
+
+				$result=($this->db->affected_rows()!= 1)? false:true;
+				if($result == true)
+				{
+
+					$this->session->set_flashdata('msg', 'Student Details Uploaded Successfully');
+					redirect('student/list_students');
+				}
+				else
+				{
+					$this->session->set_flashdata('msg1', 'Student Details Uploading Failed');
+					redirect('student/list_students');
+				}
 
 
 
